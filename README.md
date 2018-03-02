@@ -4,7 +4,7 @@ A [Conan](https://conan.io) package recipe for the [Apache Protable Runtime Util
 Usage:
 ```bash
 $ conan remote add jgsogo-conan-packages https://api.bintray.com/conan/jgsogo/conan-packages
-$ conan install apache-apr-util/1.6.3@jgsogo/stable
+$ conan install apache-apr-util/1.6.1@jgsogo/stable
 ```
 
 Build status:
@@ -21,8 +21,8 @@ Build status:
     <tr>
         <td>master</td>
         <td><a href="https://ci.appveyor.com/project/jgsogo/conan-apache-apr-util"><img src="https://ci.appveyor.com/api/projects/status/ew5vn8xnie3mjb29/branch/master" alt="Build status master-windows"/></a></td>
-        <td><a href="https://travis-ci.org/jgsogo/conan-apache-apr-util/branches"><img src="https://travis-ci.org/jgsogo/conan-apache-apr.svg?branch=master" alt="Build status master-unix"/></a></td>
-        <td><a href="https://travis-ci.org/jgsogo/conan-apache-apr-util/branches"><img src="https://travis-ci.org/jgsogo/conan-apache-apr.svg?branch=master" alt="Build status master-macos"/></a></td>
+        <td><a href="https://travis-ci.org/jgsogo/conan-apache-apr-util/branches"><img src="https://travis-ci.org/jgsogo/conan-apache-apr-util.svg?branch=master" alt="Build status master-unix"/></a></td>
+        <td><a href="https://travis-ci.org/jgsogo/conan-apache-apr-util/branches"><img src="https://travis-ci.org/jgsogo/conan-apache-apr-util.svg?branch=master" alt="Build status master-macos"/></a></td>
     </tr>
     <tr>
         <td>apache-apr-util/1.6.1@jgsogo/stable</td>
