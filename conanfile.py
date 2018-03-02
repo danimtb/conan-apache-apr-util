@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from conans import ConanFile, AutoToolsBuildEnvironment, tools, CMake
 import os
 
@@ -51,7 +53,7 @@ class ApacheAPRUtil(ConanFile):
         self.patch()
         if self.settings.os == "Windows":
             cmake = CMake(self)
-            cmake.definitions["APR_INCLUDE_DIR"] = self.deps_cpp_info["apache-apr"].include_paths[0]
+            cmake.definitions["APR_INCLUDE_DIR"] = os.path.join(self.deps_cpp_info["apache-apr"].include_paths[0], "apr-1")
             cmake.definitions["APR_LIBRARIES"] = os.path.join(self.deps_cpp_info["apache-apr"].lib_paths[0], "libapr-1.lib")
             cmake.configure(source_folder=self.lib_name)
             cmake.build()
