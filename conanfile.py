@@ -60,11 +60,19 @@ class ApacheAPRUtil(ConanFile):
             cmake.install()
         else:
             env_build = AutoToolsBuildEnvironment(self)
+            args = ['--prefix', self.package_folder,
+                    '--with-apr={}'.format(os.path.join(self.deps_cpp_info["apache-apr"].include_paths[0], "..")),  # TODO: Path to package dir?
+                    ]
             env_build.configure(configure_dir=self.lib_name,
-                                args=['--prefix', self.package_folder, ],
+                                args=args,
                                 build=False)  # TODO: Workaround for https://github.com/conan-io/conan/issues/2552
             env_build.make()
             env_build.make(args=['install'])
+
+    def package(self):
+        # TODO: Find a better approach
+        # Copy files and libs from apache-apr
+        self.copy("*.h", dst="include", src=os.path.join(self.deps_cpp_info["apache-apr"].include_paths[0]))
 
     def package_info(self):
         self.cpp_info.libs = tools.collect_libs(self)
