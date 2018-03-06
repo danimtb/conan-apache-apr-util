@@ -43,6 +43,10 @@ class ApacheAPRUtil(ConanFile):
                               "SET(XMLLIB_LIBRARIES     ${EXPAT_LIBRARIES})",
                               "SET(XMLLIB_LIBRARIES     ${EXPAT_LIBRARY})")
 
+        tools.replace_in_file(os.path.join(self.lib_name, 'CMakeLists.txt'),
+                              "INSTALL(FILES ${APR_PUBLIC_HEADERS_STATIC} ${APR_PUBLIC_HEADERS_GENERATED} DESTINATION include)",
+                              "INSTALL(FILES ${APR_PUBLIC_HEADERS_STATIC} ${APR_PUBLIC_HEADERS_GENERATED} DESTINATION include/apr-1)")
+
         if self.settings.os == "Windows":
             if self.settings.build_type == "Debug":
                 tools.replace_in_file(os.path.join(self.lib_name, 'CMakeLists.txt'),
