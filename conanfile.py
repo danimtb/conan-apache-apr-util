@@ -65,7 +65,7 @@ class ApacheAPRUtil(ConanFile):
         else:
             env_build = AutoToolsBuildEnvironment(self)
             args = ['--prefix', self.package_folder,
-                    '--with-apr={}'.format(os.path.join(self.deps_cpp_info["apache-apr"].include_paths[0], "..")),  # TODO: Path to package dir?
+                    '--with-apr={}'.format(os.path.join(self.deps_cpp_info["apache-apr"].rootpath)),
                     ]
             env_build.configure(configure_dir=self.lib_name,
                                 args=args,
