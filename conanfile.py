@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from conans import ConanFile, AutoToolsBuildEnvironment, tools, CMake
+from conans.errors import ConanException
 import os
 
 
@@ -21,6 +22,11 @@ class ApacheAPRUtil(ConanFile):
     def requirements(self):
         self.requires("apache-apr/1.6.3@jgsogo/stable")
         self.requires("expat/2.2.5@bincrafters/stable")
+
+    def configure(self):
+        if self.options["apache-apr"].shared != self.options.shared:
+            self.output.warn("apache-apr will use the same shared configuration as apache-apr-util: '{}'".format(self.options.shared))
+        self.options["apache-apr"].shared = self.options.shared
 
     def source(self):
         file_ext = ".tar.gz" if not self.settings.os == "Windows" else "-win32-src.zip"
@@ -65,7 +71,7 @@ class ApacheAPRUtil(ConanFile):
         else:
             env_build = AutoToolsBuildEnvironment(self)
             args = ['--prefix', self.package_folder,
-                    '--with-apr={}'.format(os.path.join(self.deps_cpp_info["apache-apr"].rootpath)),
+                    '--with-apr={}'.format(self.deps_cpp_info["apache-apr"].rootpath),
                     ]
             env_build.configure(configure_dir=self.lib_name,
                                 args=args,
@@ -78,5 +84,15 @@ class ApacheAPRUtil(ConanFile):
         # Copy files and libs from apache-apr
         self.copy("*.h", dst="include", src=os.path.join(self.deps_cpp_info["apache-apr"].include_paths[0]))
 
+    def package_id(self):
+        self.info.options.shared = "Any"  # Both, shared and not are built always
+
     def package_info(self):
-        self.cpp_info.libs = tools.collect_libs(self)
+        libs = ["aprutil-1", ]
+        if self.settings.os == "Windows":
+            if self.options.shared:
+                libs = ["libaprutil-1", ]
+            else:
+                self.cpp_info.defines = ["APR_DECLARE_STATIC", ]
+                libs += ["ws2_32", "Rpcrt4", ]
+        self.cpp_info.libs = libs
