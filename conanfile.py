@@ -23,11 +23,6 @@ class ApacheAPRUtil(ConanFile):
         self.requires("apache-apr/1.6.3@jgsogo/stable")
         self.requires("expat/2.2.5@bincrafters/stable")
 
-    def configure(self):
-        if self.options["apache-apr"].shared != self.options.shared:
-            self.output.warn("apache-apr will use the same shared configuration as apache-apr-util: '{}'".format(self.options.shared))
-        self.options["apache-apr"].shared = self.options.shared
-
     def source(self):
         file_ext = ".tar.gz" if not self.settings.os == "Windows" else "-win32-src.zip"
         tools.get("http://archive.apache.org/dist/apr/apr-util-{v}{ext}".format(v=self.version, ext=file_ext))
@@ -88,11 +83,13 @@ class ApacheAPRUtil(ConanFile):
         self.info.options.shared = "Any"  # Both, shared and not are built always
 
     def package_info(self):
-        libs = ["aprutil-1", ]
         if self.settings.os == "Windows":
             if self.options.shared:
                 libs = ["libaprutil-1", ]
             else:
-                self.cpp_info.defines = ["APR_DECLARE_STATIC", ]
-                libs += ["ws2_32", "Rpcrt4", ]
+                libs = ["aprutil-1", "ws2_32", "Rpcrt4", ]
+                self.cpp_info.defines = ["APU_DECLARE_STATIC", ]
+        else:
+            libs = ["aprutil-1", ]
         self.cpp_info.libs = libs
+
