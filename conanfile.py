@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from conans import ConanFile, AutoToolsBuildEnvironment, tools, CMake
-from conans.errors import ConanException
 import os
 
 
@@ -11,13 +10,19 @@ class ApacheAPRUtil(ConanFile):
     url = "https://github.com/jgsogo/conan-apache-apr-util"
     homepage = "https://apr.apache.org/"
     license = "http://www.apache.org/LICENSE.txt"
-    exports_sources = ["LICENSE",]
+    description = "The mission of the Apache Portable Runtime (APR) project is to create and maintain " \
+                  "software libraries that provide a predictable and consistent interface to underlying " \
+                  "platform-specific implementations."
+    exports_sources = ["LICENSE", ]
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False]}
     default_options = "shared=False"
     generators = "cmake"
 
     lib_name = "apr-util-" + version
+
+    def configure(self):
+        del self.settings.compiler.libcxx  # It is a C library
 
     def requirements(self):
         self.requires("apache-apr/1.6.3@jgsogo/stable")
@@ -75,9 +80,9 @@ class ApacheAPRUtil(ConanFile):
             env_build.make(args=['install'])
 
     def package(self):
-        # TODO: Find a better approach
-        # Copy files and libs from apache-apr
+        # TODO: Copy files from apache-apr, this project expected them side by side
         self.copy("*.h", dst="include", src=os.path.join(self.deps_cpp_info["apache-apr"].include_paths[0]))
+        self.copy("LICENSE", src=self.lib_name)
 
     def package_id(self):
         self.info.options.shared = "Any"  # Both, shared and not are built always
