@@ -57,7 +57,7 @@ class ApacheAPRUtil(ConanFile):
             if self.settings.build_type == "Debug":
                 tools.replace_in_file(os.path.join(self.lib_name, 'CMakeLists.txt'),
                                       "SET(install_bin_pdb ${install_bin_pdb} ${PROJECT_BINARY_DIR}/",
-                                      "SET(install_bin_pdb ${install_bin_pdb} ${PROJECT_BINARY_DIR}/Debug/")
+                                      "SET(install_bin_pdb ${install_bin_pdb} ${PROJECT_BINARY_DIR}/bin/")
 
     def build(self):
         self.patch()
