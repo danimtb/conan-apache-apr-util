@@ -75,6 +75,7 @@ class ApacheAPRUtil(ConanFile):
                     ]
             env_build.configure(configure_dir=self.lib_name,
                                 args=args,
+                                host=self.settings.arch,
                                 build=False)  # TODO: Workaround for https://github.com/conan-io/conan/issues/2552
             env_build.make()
             env_build.make(args=['install'])
