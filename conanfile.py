@@ -49,10 +49,6 @@ class ApacheAPRUtil(ConanFile):
                               "SET(XMLLIB_LIBRARIES     ${EXPAT_LIBRARIES})",
                               "SET(XMLLIB_LIBRARIES     ${EXPAT_LIBRARY})")
 
-        tools.replace_in_file(os.path.join(self.lib_name, 'CMakeLists.txt'),
-                              "INSTALL(FILES ${APR_PUBLIC_HEADERS_STATIC} ${APR_PUBLIC_HEADERS_GENERATED} DESTINATION include)",
-                              "INSTALL(FILES ${APR_PUBLIC_HEADERS_STATIC} ${APR_PUBLIC_HEADERS_GENERATED} DESTINATION include/apr-1)")
-
         if self.settings.os == "Windows":
             if self.settings.build_type == "Debug":
                 tools.replace_in_file(os.path.join(self.lib_name, 'CMakeLists.txt'),
@@ -85,7 +81,7 @@ class ApacheAPRUtil(ConanFile):
 
     def package(self):
         # TODO: Copy files from apache-apr, this project expected them side by side
-        self.copy("*.h", dst="include", src=os.path.join(self.deps_cpp_info["apache-apr"].include_paths[0]))
+        # self.copy("*.h", dst="include", src=os.path.join(self.deps_cpp_info["apache-apr"].include_paths[0]))
         self.copy("LICENSE", src=self.lib_name)
 
     def package_id(self):
@@ -100,5 +96,7 @@ class ApacheAPRUtil(ConanFile):
                 self.cpp_info.defines = ["APU_DECLARE_STATIC", ]
         else:
             libs = ["aprutil-1", ]
+            # Modify include dirs so it matches prefix_path used by pkg-config
+            self.cpp_info.includedirs = [os.path.join("include", "apr-1"), ]
         self.cpp_info.libs = libs
 
