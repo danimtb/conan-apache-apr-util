@@ -69,6 +69,7 @@ class ApacheAPRUtil(ConanFile):
             cmake.install()
         else:
             env_build = AutoToolsBuildEnvironment(self)
+            env_build.fpic = True
             args = ['--prefix', self.package_folder,
                     '--with-apr={}'.format(self.deps_cpp_info["apache-apr"].rootpath),
                     ]
@@ -85,7 +86,7 @@ class ApacheAPRUtil(ConanFile):
         self.copy("LICENSE", src=self.lib_name)
 
     def package_id(self):
-        self.info.options.shared = "Any"  # Both, shared and not are built always
+        self.info.options.shared = "Any"  # Both, shared and static are built always
 
     def package_info(self):
         if self.settings.os == "Windows":
@@ -96,7 +97,8 @@ class ApacheAPRUtil(ConanFile):
                 self.cpp_info.defines = ["APU_DECLARE_STATIC", ]
         else:
             libs = ["aprutil-1", ]
-            # Modify include dirs so it matches prefix_path used by pkg-config
+            if not self.options.shared:
+                libs += ["pthread", ]
             self.cpp_info.includedirs = [os.path.join("include", "apr-1"), ]
         self.cpp_info.libs = libs
 

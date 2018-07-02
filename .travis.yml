@@ -27,7 +27,7 @@ matrix:
         env: CONAN_GCC_VERSIONS=7 CONAN_ARCHS=x86 CONAN_BUILD_TYPES=Release CONAN_DOCKER_IMAGE=lasote/conangcc7-i386
       # Clang compilation
       - <<: *linux
-        env: CONAN_CLANG_VERSIONS=3.9 CONAN_ARCHS=x86_64 CONAN_BUILD_TYPES=Release CONAN_DOCKER_IMAGE=lasote/conanclang39
+        env: CONAN_CLANG_VERSIONS=4.0 CONAN_ARCHS=x86_64 CONAN_BUILD_TYPES=Release CONAN_DOCKER_IMAGE=lasote/conanclang40
       - <<: *linux
         env: CONAN_CLANG_VERSIONS=5.0 CONAN_ARCHS=x86_64 CONAN_BUILD_TYPES=Release CONAN_DOCKER_IMAGE=lasote/conanclang50
       #  - a x86 build for Clang
@@ -41,8 +41,8 @@ matrix:
         osx_image: xcode8.1
         env: CONAN_APPLE_CLANG_VERSIONS=8.1 CONAN_ARCHS=x86_64 CONAN_BUILD_TYPES=Release
       - <<: *osx
-        osx_image: xcode9.2
-        env: CONAN_APPLE_CLANG_VERSIONS=9.0 CONAN_ARCHS=x86_64 CONAN_BUILD_TYPES=Release
+        osx_image: xcode9.3
+        env: CONAN_APPLE_CLANG_VERSIONS=9.1 CONAN_ARCHS=x86_64 CONAN_BUILD_TYPES=Release
 
 install:
   - chmod +x .travis/install.sh
