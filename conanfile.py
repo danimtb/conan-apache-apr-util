@@ -23,7 +23,7 @@ class ApacheAPRUtil(ConanFile):
 
     def config_options(self):
         if self.settings.os == "Windows":
-            del self.options.fpic
+            del self.options.fPIC
 
     def configure(self):
         del self.settings.compiler.libcxx  # It is a C library
